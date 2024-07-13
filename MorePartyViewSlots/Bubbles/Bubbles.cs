@@ -98,10 +98,16 @@ namespace MorePartyViewSlots {
             healthBarRect.localScale = new Vector2(recaleFactor, recaleFactor);
 
             var encumbranceRect = view.transform.Find("EncumbranceIndicator") as RectTransform;
-            encumbranceRect.anchoredPosition = new Vector2(-2, -2);
+            encumbranceRect.anchoredPosition = new Vector2(0, -1);
             encumbranceRect.anchorMin = new Vector2(1, 1);
             encumbranceRect.anchorMax = new Vector2(1, 1);
             encumbranceRect.localScale = new Vector2(recaleFactor, recaleFactor);
+
+            var bottomBlockRect = view.transform.Find("BottomBlock") as RectTransform;
+            bottomBlockRect.pivot = Vector2.zero;
+            bottomBlockRect.localScale = new Vector3(recaleFactor, recaleFactor, 1);
+            var oldPos = portraitRect.position;
+            bottomBlockRect.position = new Vector2(oldPos.x, oldPos.y + 3 - (recaleFactor * portraitRect.rect.height));
 
             /* HitPoint no exists doing
             var hitpointRect = view.transform.Find("HitPoint") as RectTransform;
@@ -117,7 +123,7 @@ namespace MorePartyViewSlots {
             var buffRect = view.transform.Find("BuffMain") as RectTransform;
 
             buffRect.sizeDelta = new Vector2(-8, 24);
-            buffRect.pivot = new Vector2(0, 0);
+            buffRect.pivot = Vector2.zero;
             buffRect.anchorMin = new Vector2(0, 1);
             buffRect.anchorMax = new Vector2(1, 1);
             buffRect.anchoredPosition = new Vector2(4, -4);
@@ -133,7 +139,7 @@ namespace MorePartyViewSlots {
                 viewRect.SetAsLastSibling();
             }));
 
-            buffRect.Find("BuffTriggerNotification/BuffAdditional/").localScale = new Vector2(1.25f, 1.25f);
+            buffRect.Find("BuffTriggerNotification/BuffAdditional/").localScale = new Vector2(7.0f/8, 7.0f/8);
         }
         public static T Edit<T>(this Transform obj, Action<T> build) where T : Component {
             var component = obj.GetComponent<T>();
