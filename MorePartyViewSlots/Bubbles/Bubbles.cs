@@ -140,10 +140,5 @@ namespace MorePartyViewSlots {
             build(component);
             return component;
         }
-        public static T Edit<T>(this GameObject obj, Action<T> build) where T : Component {
-            var component = obj.GetComponent<T>();
-            build(component);
-            return component;
-        }
     }
 }
