@@ -1,0 +1,12 @@
+﻿{
+  "Id": "MorePartyViewSlots",
+  "DisplayName": "More Party View Slots",
+  "Author": "Bubbles + ADDB",
+  "Version": "1.0.0",
+  "ManagerVersion": "0.27.11",
+  "Requirements": [],
+  "AssemblyName": "MorePartyViewSlots.dll",
+  "EntryMethod": "MorePartyViewSlots.Main.Load",
+  "HomePage": "",
+  "Repository": ""
+}
