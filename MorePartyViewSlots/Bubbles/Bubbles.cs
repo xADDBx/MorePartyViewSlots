@@ -103,18 +103,15 @@ namespace MorePartyViewSlots {
             encumbranceRect.anchorMax = new Vector2(1, 1);
             encumbranceRect.localScale = new Vector2(recaleFactor, recaleFactor);
 
-            var bottomBlockRect = view.transform.Find("BottomBlock") as RectTransform;
-            bottomBlockRect.pivot = Vector2.zero;
-            bottomBlockRect.localScale = new Vector3(recaleFactor, recaleFactor, 1);
-            var oldPos = portraitRect.position;
-            bottomBlockRect.position = new Vector2(oldPos.x, oldPos.y + 3 - (recaleFactor * portraitRect.rect.height));
-
-            /* HitPoint no exists doing
-            var hitpointRect = view.transform.Find("HitPoint") as RectTransform;
+            var hitpointRect = view.transform.Find("BottomBlock") as RectTransform;
             var hpPos = hitpointRect.anchoredPosition;
-            hpPos.y -= 20;
+            hpPos.y -= 20 * 1440.0f / Screen.height;
             hitpointRect.anchoredPosition = hpPos;
-            */
+            var bottomLeft = hitpointRect.GetBottomLeftPoint();
+            hitpointRect.localScale = new Vector3(recaleFactor, recaleFactor, 1);
+            var bottomLeft2 = hitpointRect.GetBottomLeftPoint();
+            var diff = bottomLeft - bottomLeft2;
+            hitpointRect.position += new Vector3(diff.x, diff.y, 0);
 
             view.transform.Find("PartBuffView").gameObject.SetActive(false);
 
@@ -145,6 +142,9 @@ namespace MorePartyViewSlots {
             var component = obj.GetComponent<T>();
             build(component);
             return component;
+        }
+        public static Vector2 GetBottomLeftPoint(this RectTransform obj) {
+            return new Vector2(obj.position.x - obj.pivot.x * obj.localScale.x * obj.rect.width, obj.position.y - obj.pivot.y * obj.localScale.y * obj.rect.height);
         }
     }
 }
