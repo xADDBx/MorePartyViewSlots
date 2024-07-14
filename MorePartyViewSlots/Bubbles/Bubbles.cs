@@ -13,6 +13,7 @@ using UniRx;
 using UnityEngine.UI;
 using System.Reflection;
 using System.IO;
+using TMPro;
 
 namespace MorePartyViewSlots {
     [HarmonyPatch(typeof(PartyPCView))]
@@ -103,15 +104,21 @@ namespace MorePartyViewSlots {
             encumbranceRect.anchorMax = new Vector2(1, 1);
             encumbranceRect.localScale = new Vector2(recaleFactor, recaleFactor);
 
+            var coordDummy = healthBarRect.Find("Dummy") as RectTransform;
+            if (coordDummy == null) {
+                coordDummy = new GameObject("CoordDummy", typeof(RectTransform)).transform as RectTransform;
+                coordDummy.parent = healthBarRect;
+            }
+            coordDummy.anchorMin = new Vector2(1, 0);
+            coordDummy.anchorMax = new Vector2(1, 0);
+            coordDummy.anchoredPosition = new Vector2(0, 0);
+
             var hitpointRect = view.transform.Find("BottomBlock") as RectTransform;
-            var hpPos = hitpointRect.anchoredPosition;
-            hpPos.y -= 20 * 1440.0f / Screen.height;
-            hitpointRect.anchoredPosition = hpPos;
-            var bottomLeft = hitpointRect.GetBottomLeftPoint();
             hitpointRect.localScale = new Vector3(recaleFactor, recaleFactor, 1);
-            var bottomLeft2 = hitpointRect.GetBottomLeftPoint();
-            var diff = bottomLeft - bottomLeft2;
-            hitpointRect.position += new Vector3(diff.x, diff.y, 0);
+            Vector3[] corners = new Vector3[4];
+            hitpointRect.GetWorldCorners(corners);
+            Vector3 newPos = coordDummy.position + (hitpointRect.position - corners[0]);
+            hitpointRect.position = newPos;
 
             view.transform.Find("PartBuffView").gameObject.SetActive(false);
 
@@ -136,15 +143,12 @@ namespace MorePartyViewSlots {
                 viewRect.SetAsLastSibling();
             }));
 
-            buffRect.Find("BuffTriggerNotification/BuffAdditional/").localScale = new Vector2(7.0f/8, 7.0f/8);
+            buffRect.Find("BuffTriggerNotification/BuffAdditional/").localScale = new Vector2(7.0f / 8, 7.0f / 8);
         }
         public static T Edit<T>(this Transform obj, Action<T> build) where T : Component {
             var component = obj.GetComponent<T>();
             build(component);
             return component;
-        }
-        public static Vector2 GetBottomLeftPoint(this RectTransform obj) {
-            return new Vector2(obj.position.x - obj.pivot.x * obj.localScale.x * obj.rect.width, obj.position.y - obj.pivot.y * obj.localScale.y * obj.rect.height);
         }
     }
 }
