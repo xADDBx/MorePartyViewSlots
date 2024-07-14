@@ -13,7 +13,6 @@ using UniRx;
 using UnityEngine.UI;
 using System.Reflection;
 using System.IO;
-using TMPro;
 
 namespace MorePartyViewSlots {
     [HarmonyPatch(typeof(PartyPCView))]
